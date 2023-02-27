@@ -14,7 +14,7 @@ export const createUserProperty = async (
 ) => {
 	const user = await prisma.user.findFirst({
 		where: {
-			id: req.locals.userId
+			id: res.locals.user
 		}
 	})
 
