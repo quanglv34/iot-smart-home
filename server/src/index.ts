@@ -1,7 +1,11 @@
-import app from "./server";
+import app from "./modules/app";
 import * as dotenv from 'dotenv'
+import swaggerDoc from "./modules/swagger";
 dotenv.config()
 
-app.listen(8080, () => {
-    console.log('Listening on port 8080.')
+const port = 8000
+
+app.listen(port, () => {
+    console.log(`Listening on port ${port}.`)
+    swaggerDoc(app, port)
 })
