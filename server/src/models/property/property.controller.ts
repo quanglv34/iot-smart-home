@@ -5,18 +5,14 @@ import { CreateUserPropertyRequest } from "./property.schema";
 
 export const createUserProperty = async (
 	req: Request<
-		TypeOf<typeof CreateUserPropertyRequest>["params"],
+		never,
 		never,
 		TypeOf<typeof CreateUserPropertyRequest>["body"]
 	>,
 	res: Response,
 	next: NextFunction
 ) => {
-	const user = await prisma.user.findFirst({
-		where: {
-			id: req.params.userId
-		}
-	})
+	const user = req.user
 
 	if(!user) {
 		next(Error("User ID doesn't exists"))

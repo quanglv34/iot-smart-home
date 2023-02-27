@@ -19,11 +19,6 @@ import { isUserIdExists } from "../user/user.service";
  *          default: Home
  */
 export const CreateUserPropertyRequest = object({
-	params: object({
-		userId: string({
-			required_error: "User ID is required",
-		}),
-	}),
 	body: object({
 		name: string({
 			required_error: "Name of property is required",

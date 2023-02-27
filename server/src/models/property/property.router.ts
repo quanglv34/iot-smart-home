@@ -3,7 +3,7 @@ import { Router } from "express";
 import { createUserProperty } from "./property.controller";
 import { CreateUserPropertyRequest } from "./property.schema";
 
-const propertyRouter = Router()
+const propertyRouter = Router({ mergeParams: true });
 
 propertyRouter.use("/users/:userId/properties", [
 	/**
@@ -11,7 +11,7 @@ propertyRouter.use("/users/:userId/properties", [
 	 * /users/{userId}/properties:
 	 *  post:
 	 *   tags: [Property]
-	 *   summary: Register a user
+	 *   summary: Create a new property for the user
 	 *   parameters:
 	 *    - in: path
 	 *      name: userId
