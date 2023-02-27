@@ -12,7 +12,11 @@ export const createUserProperty = async (
 	res: Response,
 	next: NextFunction
 ) => {
-	const user = req.user
+	const user = await prisma.user.findFirst({
+		where: {
+			id: req.locals.userId
+		}
+	})
 
 	if(!user) {
 		next(Error("User ID doesn't exists"))
