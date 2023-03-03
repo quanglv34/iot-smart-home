@@ -2,13 +2,30 @@ import validateRequest from "../../middleware/validateRequest";
 import {
 	CreateUserRequest,
 	DeleteUserRequest,
-	EditUserRequest,
+	EditUserRequest, HasUserId,
 	ViewUserRequest,
 } from "./user.schema";
-import { Router } from "express";
+import {NextFunction, Request, Response, Router} from "express";
 import { createUser, deleteUser, editUser, listUsers, viewUser } from "./user.controller";
+import {findUserById} from "./user.service";
 
 const userRouter = Router();
+
+export const verifyUserId = async (req: Request, res: Response, next: NextFunction) => {
+	try {
+		HasUserId.passthrough().parse(req.params);
+	} catch (e: any) {
+		return res.status(400).send(e.errors);
+	}
+
+	const user = await findUserById(req.params.userId);
+
+	if (!user) {
+		return res.status(400).send({ message: "User ID doesn't exists" });
+	}
+	res.locals.user = user;
+	next();
+};
 
 userRouter.use("/users", [
 	/**

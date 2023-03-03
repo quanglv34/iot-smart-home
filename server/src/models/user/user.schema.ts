@@ -1,14 +1,14 @@
 import { object, TypeOf, string, nativeEnum } from "zod";
 import prisma from "../../modules/database";
-import { isEmailAvailable, isUserIdExists } from "./user.service";
+import { isEmailAvailable, findUserById } from "./user.service";
 
 export enum UserRole {
 	ADMIN = "ADMIN",
 	USER = "USER",
 }
 
-export const HasUserID = object({
-	id: string({
+export const HasUserId = object({
+	userId: string({
 		required_error: "User ID is required",
 	}),
 });
@@ -98,7 +98,7 @@ export const DeleteUserRequest = object({
 	params: object({
 		userId: string({
 			required_error: "User ID is required",
-		}).refine(isUserIdExists, {
+		}).refine(findUserById, {
 			message: "User ID doesn't exist",
 		}),
 	}),

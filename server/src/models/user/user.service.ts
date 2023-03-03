@@ -1,13 +1,10 @@
 import prisma from "../../modules/database";
 
-export const isUserIdExists = async (value) => {
+export const findUserById = async (value) => {
 	try {
 		const user = await prisma.user.findFirst({
 			where: {
 				id: value,
-			},
-			select: {
-				id: true,
 			},
 		});
 		return user;
