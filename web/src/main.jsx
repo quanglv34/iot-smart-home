@@ -1,10 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import Login from "./pages/Login";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+	createBrowserRouter,
+	redirect,
+	RouterProvider,
+} from "react-router-dom";
+import {
+	QueryClient,
+	useQuery,
+	QueryClientProvider,
+} from "@tanstack/react-query";
 import "./index.css";
-import App from "./App";
-import Register from "./pages/Register";
+
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 import Error from "./pages/Error";
 import AdminLayout from "./components/AdminLayout";
 import AppLayout from "./components/AppLayout";
@@ -13,12 +22,15 @@ import PropertyMemberList from "./components/PropertyMemberList";
 import Account from "./pages/Account";
 import AllDevices from "./pages/AllDevices";
 import MyDevices from "./pages/MyDevices";
+import HomePage from "./pages/HomePage";
+import { useAuthStore } from "./store";
 
+const queryClient = new QueryClient();
 const router = createBrowserRouter([
 	{
 		path: "/",
 		errorElement: <Error />,
-		element: <App />,
+		element: <HomePage />,
 	},
 	{
 		path: "/admin",
@@ -63,17 +75,31 @@ const router = createBrowserRouter([
 	{
 		path: "/login",
 		errorElement: <Error />,
-		element: <Login />,
+		element: <LoginPage />,
+		loader: () => {
+			if (useAuthStore.getState().token) return redirect("/app");
+			return null;
+		},
 	},
 	{
 		path: "/register",
 		errorElement: <Error />,
-		element: <Register />,
+		element: <RegisterPage />,
+	},
+	{
+		path: "/403",
+		element: <Error message={"Your are not allowed to go to this page."} />,
+	},
+	{
+		path: "*",
+		element: <Error />,
 	},
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
-		<RouterProvider router={router} />
+		<QueryClientProvider client={queryClient}>
+			<RouterProvider router={router} />
+		</QueryClientProvider>
 	</React.StrictMode>
 );

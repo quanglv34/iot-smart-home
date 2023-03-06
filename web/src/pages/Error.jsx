@@ -1,6 +1,6 @@
 import { Link, useRouteError } from "react-router-dom";
 
-export default function Error() {
+export default function Error(props) {
 	const error = useRouteError();
 	console.error(error);
 
@@ -11,7 +11,7 @@ export default function Error() {
 		>
 			<h1 className="text-6xl font-bold">Oops!</h1>
 			<p className="text-xl text-gray-700">
-				Sorry, an unexpected error has occurred.
+				{props.message ?? 'Sorry, an unexpected error has occurred.'}
 			</p>
 			<Link to="/" className="inline-block text-base font-medium text-blue-500 hover:text-blue-700">
 				Back to home
