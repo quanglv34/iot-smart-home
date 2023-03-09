@@ -1,4 +1,4 @@
-import AppPage from "../components/AppPage";
+import AppPage from "../layouts/AppPage";
 import { DeviceList } from "../components/DeviceList";
 import PropertyMemberInviteButton from "../components/PropertyMemberInviteButton";
 

@@ -7,7 +7,6 @@ export default function AppLayout() {
 		<div className="flex flex-row">
 			<AppLayoutSidebar />
 			<div className="h-fit w-full">
-				<AppLayoutHeader />
 				<Outlet />
 			</div>
 		</div>

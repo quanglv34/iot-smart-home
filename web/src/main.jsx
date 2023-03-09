@@ -1,31 +1,31 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
+import {
+	QueryClient, QueryClientProvider
+} from "@tanstack/react-query"
+import React from "react"
+import ReactDOM from "react-dom/client"
 import {
 	createBrowserRouter,
 	redirect,
-	RouterProvider,
-} from "react-router-dom";
-import {
-	QueryClient,
-	useQuery,
-	QueryClientProvider,
-} from "@tanstack/react-query";
-import "./index.css";
+	RouterProvider
+} from "react-router-dom"
+import "./index.css"
 
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
-import Error from "./pages/Error";
-import AdminLayout from "./components/AdminLayout";
-import AppLayout from "./components/AppLayout";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import PropertyMemberList from "./components/PropertyMemberList";
-import Account from "./pages/Account";
-import AllDevices from "./pages/AllDevices";
-import MyDevices from "./pages/MyDevices";
-import HomePage from "./pages/HomePage";
-import { useAuthStore } from "./store";
+import AdminLayout from "./layouts/AdminLayout"
+import AppLayout from "./layouts/AppLayout"
+import AccountPage from "./pages/AccountPage"
+import AdminDashboard from "./pages/admin/AdminDashboard"
+import AdminUserListPage from "./pages/admin/AdminUserListPage"
+import AllDevices from "./pages/AllDevices"
+import Error from "./pages/Error"
+import HomeListHomes from "./pages/HomeListHomes"
+import HomePage from "./pages/HomePage"
+import HomeViewHome from "./pages/HomeViewHome"
+import LoginPage from "./pages/LoginPage"
+import MyDevices from "./pages/MyDevices"
+import RegisterPage from "./pages/RegisterPage"
+import { useAuthStore } from "./store"
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -41,26 +41,37 @@ const router = createBrowserRouter([
 				path: "/admin",
 				element: <AdminDashboard />,
 			},
+			{
+				path: "/admin/users",
+				element: <AdminUserListPage />,
+			},
 		],
 	},
 	{
 		path: "/app",
+		loader: () => {
+			if (!useAuthStore.getState().token) return redirect("/");
+			return null;
+		},
 		errorElement: <Error />,
 		element: <AppLayout />,
 		children: [
 			{
-				path: "/app/properties",
-				element: <PropertyMemberList />,
+				path: "/app/homes",
 				children: [
 					{
-						path: "/app/properties/:propertyId/members",
-						element: <PropertyMemberList />,
+						path: "/app/homes",
+						element: <HomeListHomes />,
+					},
+					{
+						path: "/app/homes/:homeId",
+						element: <HomeViewHome />,
 					},
 				],
 			},
 			{
 				path: "/app/account",
-				element: <Account />,
+				element: <AccountPage />,
 			},
 			{
 				path: "/app/devices",
@@ -79,6 +90,15 @@ const router = createBrowserRouter([
 		loader: () => {
 			if (useAuthStore.getState().token) return redirect("/app");
 			return null;
+		},
+	},
+	{
+		path: "/logout",
+		errorElement: <Error />,
+		element: <LoginPage />,
+		loader: () => {
+			useAuthStore.getState().removeToken();
+			return redirect("/login");
 		},
 	},
 	{
@@ -102,4 +122,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 			<RouterProvider router={router} />
 		</QueryClientProvider>
 	</React.StrictMode>
-);
+)

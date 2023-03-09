@@ -1,5 +1,5 @@
 import { Label, TextInput, Button, Checkbox, Card } from "flowbite-react";
-import { Link, redirect } from "react-router-dom";
+import { Link, Navigate, redirect } from "react-router-dom";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import { authenticateRequest } from "../api";
@@ -7,8 +7,8 @@ import { useAuthStore } from "../store";
 
 function LoginPage() {
 	const { isLoading, error, isError, mutateAsync, data } = useMutation({mutationKey: 'authenticateRequest', mutationFn: authenticateRequest});
-	const token = useAuthStore((state) => state.token)
 	const setAuthToken = useAuthStore((state) => state.setToken);
+	const token = useAuthStore((state) => state.token);
 
 	const formik = useFormik({
 		initialValues: {
@@ -21,13 +21,14 @@ function LoginPage() {
 				username: values.username,
 				password: values.password,
 				rememberMe: values.rememberMe,
-			}).then(data => setAuthToken(data.id_token));
+			}).then(data => {
+				setAuthToken(data.id_token)
+			});
 		},
 	});
 
-	if (token) {
-		console.log("already logged in");
-		return redirect("/");
+	if(token) {
+		return <Navigate to={"/app"}></Navigate>;
 	}
 
 	return (
@@ -85,7 +86,7 @@ function LoginPage() {
 					</Button>
 
 					<p className="text-sm">
-						Don&apost have an account?{" "}
+						Don&apos;t have an account?{" "}
 						<Link
 							to="/register"
 							className=" font-medium text-blue-700 hover:text-blue-500"

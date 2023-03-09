@@ -1,4 +1,4 @@
-import AppPage from "./AppPage";
+import AppPage from "../layouts/AppPage";
 import PropertyMemberInviteButton from "./PropertyMemberInviteButton";
 import { Table } from "flowbite-react";
 

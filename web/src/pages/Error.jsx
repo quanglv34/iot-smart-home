@@ -13,7 +13,7 @@ export default function Error(props) {
 			<p className="text-xl text-gray-700">
 				{props.message ?? 'Sorry, an unexpected error has occurred.'}
 			</p>
-			<Link to="/" className="inline-block text-base font-medium text-blue-500 hover:text-blue-700">
+			<Link to="/app" className="inline-block text-base font-medium text-blue-500 hover:text-blue-700">
 				Back to home
 			</Link>
 		</div>

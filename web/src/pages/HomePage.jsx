@@ -2,15 +2,15 @@ import { Link } from "react-router-dom";
 
 function HomePage() {
 	return (
-		<section className="grid h-screen items-center bg-white dark:bg-gray-900">
+		<section className="grid h-screen select-none items-center bg-white  dark:bg-gray-900">
 			<div className="mx-auto grid max-w-screen-xl px-8 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0">
 				<div className="mr-auto place-self-center lg:col-span-7">
 					<h1 className="mb-4 max-w-2xl text-4xl font-extrabold leading-none tracking-tight dark:text-white md:text-5xl xl:text-6xl">
 						All-in-one IoT solution for your home
 					</h1>
 					<p className="mb-6 max-w-2xl font-light text-gray-500 dark:text-gray-400 md:text-lg lg:mb-8 lg:text-xl">
-						With smart home technology, we are ready
-						to offer our customers a solution that fits every need.
+						With smart home technology, we are ready to offer our
+						customers a solution that fits every need.
 					</p>
 					<Link
 						to="/login"

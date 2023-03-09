@@ -1,8 +1,8 @@
 import { Label, TextInput, Button } from "flowbite-react";
 import { Link } from "react-router-dom";
-import AppPage from "../components/AppPage";
+import AppPage from "../layouts/AppPage";
 
-export default function Account() {
+export default function AccountPage() {
 	return (
 		<AppPage
 			title="Your Account Info"
