@@ -1,6 +1,6 @@
 import { Link, useRouteError } from "react-router-dom";
 
-export default function Error(props) {
+export default function AppError(props) {
 	const error = useRouteError();
 	console.error(error);
 

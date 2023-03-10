@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function HomePage() {
+function AppHomePage() {
 	return (
 		<section className="grid h-screen select-none items-center bg-white  dark:bg-gray-900">
 			<div className="mx-auto grid max-w-screen-xl px-8 py-8 lg:grid-cols-12 lg:gap-8 lg:py-16 xl:gap-0">
@@ -49,4 +49,4 @@ function HomePage() {
 	);
 }
 
-export default HomePage;
+export default AppHomePage;

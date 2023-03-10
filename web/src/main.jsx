@@ -15,13 +15,11 @@ import AppLayout from "./layouts/AppLayout"
 import AccountPage from "./pages/AccountPage"
 import AdminDashboard from "./pages/admin/AdminDashboard"
 import AdminUserListPage from "./pages/admin/AdminUserListPage"
-import AllDevices from "./pages/AllDevices"
-import Error from "./pages/Error"
+import AppHomePage from "./pages/AppHomePage"
+import AppError from "./pages/AppError";
 import HomeListHomes from "./pages/HomeListHomes"
-import HomePage from "./pages/HomePage"
 import HomeViewHome from "./pages/HomeViewHome"
 import LoginPage from "./pages/LoginPage"
-import MyDevices from "./pages/MyDevices"
 import RegisterPage from "./pages/RegisterPage"
 import { useAuthStore } from "./store"
 
@@ -29,12 +27,12 @@ const queryClient = new QueryClient()
 const router = createBrowserRouter([
 	{
 		path: "/",
-		errorElement: <Error />,
-		element: <HomePage />,
+		errorElement: <AppError />,
+		element: <AppHomePage />,
 	},
 	{
 		path: "/admin",
-		errorElement: <Error />,
+		errorElement: <AppError />,
 		element: <AdminLayout />,
 		children: [
 			{
@@ -53,7 +51,7 @@ const router = createBrowserRouter([
 			if (!useAuthStore.getState().token) return redirect("/");
 			return null;
 		},
-		errorElement: <Error />,
+		errorElement: <AppError />,
 		element: <AppLayout />,
 		children: [
 			{
@@ -73,19 +71,11 @@ const router = createBrowserRouter([
 				path: "/app/account",
 				element: <AccountPage />,
 			},
-			{
-				path: "/app/devices",
-				element: <AllDevices />,
-			},
-			{
-				path: "/app/devices/my-devices",
-				element: <MyDevices />,
-			},
 		],
 	},
 	{
 		path: "/login",
-		errorElement: <Error />,
+		errorElement: <AppError />,
 		element: <LoginPage />,
 		loader: () => {
 			if (useAuthStore.getState().token) return redirect("/app");
@@ -94,7 +84,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/logout",
-		errorElement: <Error />,
+		errorElement: <AppError />,
 		element: <LoginPage />,
 		loader: () => {
 			useAuthStore.getState().removeToken();
@@ -103,16 +93,18 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/register",
-		errorElement: <Error />,
+		errorElement: <AppError />,
 		element: <RegisterPage />,
 	},
 	{
 		path: "/403",
-		element: <Error message={"Your are not allowed to go to this page."} />,
+		element: (
+			<AppError message={"Your are not allowed to go to this page."} />
+		),
 	},
 	{
 		path: "*",
-		element: <Error />,
+		element: <AppError />,
 	},
 ]);
 
