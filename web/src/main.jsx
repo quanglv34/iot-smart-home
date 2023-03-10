@@ -22,6 +22,7 @@ import HomeViewHome from "./pages/HomeViewHome"
 import LoginPage from "./pages/LoginPage"
 import RegisterPage from "./pages/RegisterPage"
 import { useAuthStore } from "./store"
+import RoomViewRoom from "./pages/RoomViewRoom"
 
 const queryClient = new QueryClient()
 const router = createBrowserRouter([
@@ -64,6 +65,16 @@ const router = createBrowserRouter([
 					{
 						path: "/app/homes/:homeId",
 						element: <HomeViewHome />,
+					},
+				],
+			},
+			{
+				path: "/app/rooms",
+				errorElement: <AppError/>,
+				children: [
+					{
+						path: "/app/rooms/:roomId",
+						element: <RoomViewRoom />,
 					},
 				],
 			},

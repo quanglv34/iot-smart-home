@@ -34,9 +34,21 @@ export default function HomeListHomes() {
 		return <Spinner />;
 	}
 	return (
-		<AppPage
-			title="Home"
-			content={
+		<AppPage>
+						<AppPage.Header>
+				<AppPage.HeaderTitle>
+					<h1 className="block text-4xl font-bold capitalize">
+						Home
+						{/* <span className="mt-1 flex flex-row items-center text-sm font-normal text-gray-500">
+							<HiOutlineViewColumns className="mr-1 inline-block h-5 w-5" />
+							Room ID: {roomId}
+						</span> */}
+					</h1>
+				</AppPage.HeaderTitle>
+				<AppPage.HeaderActions>
+					<CreateHomeButton userHomesQuery={userHomesQuery} />
+				</AppPage.HeaderActions>
+			</AppPage.Header>
 				<div className="divide-y overflow-clip rounded-lg border shadow-sm">
 					{userHomesQuery.data.map((record) => (
 						<div
@@ -90,9 +102,7 @@ export default function HomeListHomes() {
 						</div>
 					))}
 				</div>
-			}
-			actions={<CreateHomeButton userHomesQuery={userHomesQuery} />}
-		/>
+		</AppPage>
 	);
 }
 
