@@ -48,11 +48,6 @@ export default function AppLayoutSidebar() {
 								Home
 							</Sidebar.Item>
 						</Link>
-						<Link to="/app/sensors">
-							<Sidebar.Item icon={HiOutlineInbox} as={"span"}>
-								Sensor
-							</Sidebar.Item>
-						</Link>
 						<Sidebar.Collapse
 							icon={HiOutlineUserCircle}
 							label="Account"

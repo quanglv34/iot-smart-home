@@ -11,14 +11,14 @@ function Header({ children }) {
 }
 
 function HeaderActions({ children }) {
-	return <div className="grid grid-flow-col gap-2">{children}</div>;
+	return <div className="grid grid-flow-col gap-2 self-start">{children}</div>;
 }
 
 function HeaderTitle({ title, children }) {
 	return (
 		<>
 			{title && (
-				<h1 className="block text-4xl font-bold capitalize">title</h1>
+				<h1 className="block text-4xl font-bold capitalize items">{title}</h1>
 			)}
 			{children}
 		</>

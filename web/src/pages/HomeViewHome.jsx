@@ -2,13 +2,15 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { Button, Card, Label, Modal, Spinner, TextInput } from "flowbite-react";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { HiOutlineCalendarDays, HiOutlinePencilSquare, HiOutlineUserCircle, HiPlus, HiXMark } from "react-icons/hi2";
+import { HiOutlineCalendarDays, HiOutlinePencilSquare, HiOutlineUserCircle, HiOutlineViewColumns, HiPlus, HiXMark } from "react-icons/hi2";
 import { Link, useParams } from "react-router-dom";
 import {
 	editHomeRequest, fetchHomeRequest
 } from "../api/home";
 import { createRoomRequest, deleteRoomRequest, fetchHomeRoomsRequest } from "../api/room";
 import AppPage from "../layouts/AppPage";
+
+
 
 export default function HomeViewHome(props) {
 	const [recordData, setRecordData] = useState({ name: "", location: "" });
@@ -45,6 +47,7 @@ export default function HomeViewHome(props) {
 		await homeRoomsQuery.refetch();
 	};
 
+
 	if (homeQuery.isLoading || homeRoomsQuery.isLoading) {
 		return <Spinner />;
 	}
@@ -55,10 +58,10 @@ export default function HomeViewHome(props) {
 				<AppPage.HeaderTitle>
 					<h1 className="block text-4xl font-bold capitalize">
 						View Home
-						{/* <span className="mt-1 flex flex-row items-center text-sm font-normal text-gray-500">
+						<span className="mt-2 flex flex-row items-center text-sm font-normal text-gray-500">
 							<HiOutlineViewColumns className="mr-1 inline-block h-5 w-5" />
-							Room ID: {roomId}
-						</span> */}
+							Home ID: {homeId}
+						</span>
 					</h1>
 				</AppPage.HeaderTitle>
 				<AppPage.HeaderActions>
@@ -78,7 +81,7 @@ export default function HomeViewHome(props) {
 			<div className="space-y-8">
 				<section>
 					<h2 className="mb-2 text-2xl font-semibold">Info</h2>
-					<Card className="shadow-none">
+					<Card className="!shadow-none">
 						<form
 							className="grid select-none grid-cols-2 gap-4"
 							id="view-home-form"
