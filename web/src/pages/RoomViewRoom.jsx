@@ -132,7 +132,7 @@ function EditRoomButton(props) {
 					location: values.location,
 				},
 			});
-			props.refetch();
+			await props.refetch();
 			setShowModal(false);
 		},
 	});

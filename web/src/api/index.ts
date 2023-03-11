@@ -2,7 +2,7 @@ import axios, { HeadersDefaults } from "axios";
 import { useAuthStore } from "../store";
 
 const AxiosInstance = axios.create({
-	baseURL: "http://localhost:3000/api/",
+	baseURL: "http://192.168.1.104:3000/api/",
 });
 
 AxiosInstance.interceptors.request.use((config) => {

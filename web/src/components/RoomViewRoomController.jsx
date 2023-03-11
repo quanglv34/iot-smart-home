@@ -134,7 +134,7 @@ const RoomViewRoomController = (props) => {
 							className={`focus:ring-blue-700} h-24 rounded-lg border border-gray-200 bg-white text-gray-500 hover:cursor-pointer hover:bg-gray-300/5  hover:text-blue-700 focus:text-blue-700 focus:outline-none focus:ring-2`}
 						>
 							<AddControllerButton
-								roomControllersQuery={roomControllersQuery}
+								refetch={roomControllersQuery.refetch}
 							></AddControllerButton>
 						</li>
 					</ul>

@@ -6,12 +6,13 @@ if (process.env.NODE_ENV !== "production") {
 	Pusher.logToConsole = true;
 }
 
-export const pusher = new Pusher("b2af1eee963f78f9a768", {
+export const pusher = new Pusher("cf76f2b2b00aee9a32ae", {
 	cluster: "ap1",
 	authorizer(channel, _) {
 		return {
 			async authorize(socketId: string, callback: AuthorizerCallback) {
 				try {
+					console.log(socketId);
 					const payload = {
 						socket_id: socketId,
 						channel_name: channel.name,
