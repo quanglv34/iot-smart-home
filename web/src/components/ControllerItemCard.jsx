@@ -4,7 +4,7 @@ import { ControllerItemType } from "../api/controller";
 import { Chart, registerables } from "chart.js";
 import { Chart as ReactChartJs } from "react-chartjs-2";
 import "chart.js/auto";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { pusher } from "../modules/pusher";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosInstance } from "../api";
@@ -36,12 +36,14 @@ export default function ControllerItemCard(props) {
 							return (
 								<ControllerItemCardDevice
 									item={item}
+									refetch={props.refetch}
 								></ControllerItemCardDevice>
 							);
 						case ControllerItemType.SENSOR:
 							return (
 								<ControllerItemCardSensor
 									item={item}
+									refetch={props.refetch}
 								></ControllerItemCardSensor>
 							);
 						default:
@@ -57,13 +59,18 @@ export default function ControllerItemCard(props) {
 	);
 }
 
-function ControllerItemCardDevice({ item }) {
-	  useEffect(() => {
-			const channel = pusher.subscribe(`private-device_${item.id}`);
-			channel.bind("update-status", (data) => {			
-				console.log("update device data " + item.id, data);
-			});
-		}, []);
+function ControllerItemCardDevice({ item, refetch }) {
+	useEffect(() => {
+		console.log('created pusher')
+		const channel = pusher.subscribe(`private-device_${item.id}`);
+		channel.bind("update-status", async (data) => {
+			refetch();
+			console.log("updated " + item.id);
+		});
+		return () => {
+			pusher.subscribe(`private-device_${item.id}`);
+		};
+	}, []);
 
 	return (
 		<div>
@@ -83,30 +90,27 @@ function ControllerItemCardDevice({ item }) {
 	);
 }
 
-function ControllerItemCardSensor({ item }) {
-	const startTime = new Date();
-	const endTime = new Date();
-	startTime.setMinutes(startTime.getMinutes() - 2);
-
-	const logs = item.logs;
-	const latestLog = logs[logs.length - 1];
-	const latestLogDescription = JSON.parse(latestLog.description);
-	const properties = Object.keys(latestLogDescription);
-
-	const filteredLog = logs.filter((log) => {
-		const createdDate = new Date(log.createdDate);
-		return (
-			createdDate.getTime() >= startTime.getTime() &&
-			createdDate.getTime() <= endTime.getTime()
-		);
-	});
-
+function ControllerItemCardSensor({ item, refetch }) {
 	useEffect(() => {
+				console.log("created pusher");
+
 		const channel = pusher.subscribe(`private-sensor_${item.id}`);
 		channel.bind("update", async (data) => {
-			console.log("fetch data= " + item.id, data);
+			refetch();
+			console.log("updated " + item.id);
 		});
+		return () => {
+			pusher.unsubscribe(`private-sensor_${item.id}`);
+		};
 	}, []);
+	const logs = item.logs;
+	const latestLog = logs[logs.length - 1];
+	const latestLogDescription = latestLog?.description
+		? JSON.parse(latestLog?.description)
+		: {};
+	const properties = Object.keys(latestLogDescription) ?? {};
+
+	const filteredLog = logs.slice(logs.length - 10, logs.length);
 
 	return (
 		<div className="!shadow-none">
@@ -128,11 +132,17 @@ function ControllerItemCardSensor({ item }) {
 					const data = {
 						labels: filteredLog.map(
 							(log) =>
-								new Date(log.createdDate).getHours() +
+								String(
+									new Date(log.createdDate).getHours()
+								).padStart(2, 0) +
 								":" +
-								new Date(log.createdDate).getMinutes() +
+								String(
+									new Date(log.createdDate).getMinutes()
+								).padStart(2, 0) +
 								":" +
-								new Date(log.createdDate).getSeconds()
+								String(
+									new Date(log.createdDate).getSeconds()
+								).padStart(2, 0)
 						),
 						datasets: [
 							{

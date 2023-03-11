@@ -50,7 +50,7 @@ export interface registerRequestBody {
 
 export const registerRequest = async (requestBody: registerRequestBody) => {
 	try {
-		const { data } = await AxiosInstance.post("register");
+		const { data } = await AxiosInstance.post("register", requestBody);
 		return data;
 	} catch (error) {
 		throw Error(error.response.data.message);

@@ -2,8 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import { Badge, Spinner, Table } from "flowbite-react";
 import { fetchListUsers } from "../api/user";
 
-export function UserTableList() {
-	const { data, isLoading } = useQuery(["users"], fetchListUsers);
+export function UserTableList({ data, isLoading}) {
+
 
 	console.log(data);
 	const users = data;

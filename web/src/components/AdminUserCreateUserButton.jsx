@@ -13,7 +13,7 @@ import { useFormik } from "formik";
 import { registerRequest } from "../api";
 import { UserRole } from "../store";
 
-export default function AdminUserCreateUserButton() {
+export default function AdminUserCreateUserButton({ refetch}) {
 	let [showModel, setShowModel] = useState(false);
 
 	const { isLoading, error, isError, mutateAsync, data } = useMutation({
@@ -40,8 +40,10 @@ export default function AdminUserCreateUserButton() {
 				password: values.password,
 				authorities: values.roles,
 			});
-			
+			refetch();
 			resetForm();
+						setShowModel(false);
+
 		},
 	});
 

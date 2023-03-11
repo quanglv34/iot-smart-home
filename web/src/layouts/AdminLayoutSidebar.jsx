@@ -23,14 +23,6 @@ export default function AdminLayoutSidebar() {
 						<Link to={"/admin/users"}>
 							<Sidebar.Item
 								as={"span"}
-								icon={HiOutlineInboxStack}
-							>
-								Device
-							</Sidebar.Item>
-						</Link>
-						<Link to={"/admin/users"}>
-							<Sidebar.Item
-								as={"span"}
 								icon={HiOutlineUserGroup}
 							>
 								User

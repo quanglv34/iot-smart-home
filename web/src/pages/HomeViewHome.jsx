@@ -98,6 +98,7 @@ export default function HomeViewHome(props) {
 									disabled
 									id="name"
 									type="text"
+									name="name"
 									placeholder="A name for your home"
 									value={editHomeForm.values.name}
 									required={true}
@@ -114,6 +115,7 @@ export default function HomeViewHome(props) {
 								<TextInput
 									disabled
 									id="location"
+									name="location"
 									type="location"
 									placeholder="Your home location"
 									value={editHomeForm.values.location}
@@ -128,53 +130,60 @@ export default function HomeViewHome(props) {
 					<div>
 						<h2 className="mb-2 text-2xl font-semibold">Rooms</h2>
 						<div className="divide-y overflow-clip rounded-lg border shadow-sm">
-							{rooms.map((record) => (
-								<div
-									key={record.id}
-									className="text-md  flex flex-row justify-between bg-white px-6 py-5  hover:bg-gray-300/5"
-								>
-									<Link
+							{rooms.length > 0 ? (
+								rooms.map((record) => (
+									<div
 										key={record.id}
-										className="block grow hover:cursor-pointer"
-										to={`/app/rooms/${record.id}`}
+										className="text-md  flex flex-row justify-between bg-white px-6 py-5  hover:bg-gray-300/5"
 									>
-										<div>
-											<h2 className="mb-4 text-base font-semibold leading-none text-blue-500">
-												{record.name}
-											</h2>
-											<div className="space-y-2 text-sm font-light">
-												<div className="flex flex-row space-x-5">
-													<span className="flex flex-row items-start gap-1 text-gray-700">
-														<HiOutlineUserCircle className="h-5 w-5" />
-														{record.createdBy}
-													</span>
-													<span className="flex flex-row items-start gap-1 text-gray-700">
-														<HiOutlineCalendarDays className="h-5 w-5" />
-														{new Date(
-															record.createdDate
-														).toDateString()}
-													</span>
+										<Link
+											key={record.id}
+											className="block grow hover:cursor-pointer"
+											to={`/app/rooms/${record.id}`}
+										>
+											<div>
+												<h2 className="mb-4 text-base font-semibold leading-none text-blue-500">
+													{record.name}
+												</h2>
+												<div className="space-y-2 text-sm font-light">
+													<div className="flex flex-row space-x-5">
+														<span className="flex flex-row items-start gap-1 text-gray-700">
+															<HiOutlineUserCircle className="h-5 w-5" />
+															{record.createdBy}
+														</span>
+														<span className="flex flex-row items-start gap-1 text-gray-700">
+															<HiOutlineCalendarDays className="h-5 w-5" />
+															{new Date(
+																record.createdDate
+															).toDateString()}
+														</span>
+													</div>
 												</div>
 											</div>
-										</div>
-									</Link>
+										</Link>
 
-									<div className="flex items-start leading-none">
-										{deleteRoomMutation.isLoading ? (
-											<Spinner size={"sm"} />
-										) : (
-											<button
-												onClick={() =>
-													onDeleteRoom(record.id)
-												}
-												className="rounded-full p-1 text-gray-700 hover:bg-gray-500/5"
-											>
-												<HiXMark className="h-4 w-4" />
-											</button>
-										)}
+										<div className="flex items-start leading-none">
+											{deleteRoomMutation.isLoading ? (
+												<Spinner size={"sm"} />
+											) : (
+												<button
+													onClick={() =>
+														onDeleteRoom(record.id)
+													}
+													className="rounded-full p-1 text-gray-700 hover:bg-gray-500/5"
+												>
+													<HiXMark className="h-4 w-4" />
+												</button>
+											)}
+										</div>
 									</div>
+								))
+							) : (
+								<div className="px-5 py-4">
+									You don't have any room. Please create new
+									room
 								</div>
-							))}
+							)}
 						</div>
 					</div>
 				</section>

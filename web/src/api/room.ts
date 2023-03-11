@@ -6,13 +6,12 @@ export const fetchRoomRequest = async ({ queryKey }) => {
 	return data;
 };
 
-export const fetchHomeRoomsRequest = async (params) => {
-	const homeId = params[1];
-	console.log('homeId=', homeId);
-	const { data } = await AxiosInstance.get("rooms",  {
+export const fetchHomeRoomsRequest = async ({queryKey}) => {
+	const homeId = queryKey[1];
+	const { data } = await AxiosInstance.get(`rooms`, {
 		params: {
-			homeId: homeId,
-		}
+			homeId,
+		},
 	});
 	return data;
 };

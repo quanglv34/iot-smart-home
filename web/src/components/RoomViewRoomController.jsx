@@ -9,7 +9,7 @@ import {
 	TextInput,
 } from "flowbite-react";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
 	HiOutlineCpuChip,
 	HiOutlineInbox,
@@ -38,6 +38,9 @@ const RoomViewRoomController = (props) => {
 		mutationFn: deleteControllerRequest,
 	});
 
+	const [activeTab, setActiveTab] = useState(0);
+	const tabsRef = useRef(null);
+
 	const onDeleteController = async (controllerId) => {
 		await deleteControllerMutation.mutateAsync({
 			params: {
@@ -55,6 +58,11 @@ const RoomViewRoomController = (props) => {
 		["sensorsQuery/" + controllerId, controllerId],
 		fetchControllerSensorsRequest
 	);
+
+	const refetchStatistics = () => {
+		sensorsQuery.refetch();
+		devicesQuery.refetch();
+	};
 
 	const handleChangeControllerId = props.handleChangeControllerId;
 
@@ -156,7 +164,12 @@ const RoomViewRoomController = (props) => {
 						<AddSensorButton refetch={sensorsQuery.refetch} />
 					</AppPage.HeaderActions>
 				</div>
-				<Tabs.Group aria-label="Tabs with underline" style="underline">
+				<Tabs.Group
+					aria-label="Tabs with underline"
+					style="underline"
+					ref={tabsRef}
+					onActiveTabChange={(tab) => setActiveTab(tab)}
+				>
 					<Tabs.Item
 						className="!p-0"
 						active={true}
@@ -168,11 +181,15 @@ const RoomViewRoomController = (props) => {
 								</Badge>
 							</>
 						}
+						onClick={() => tabsRef.current?.setActiveTab(0)}
 						icon={HiOutlineServerStack}
 					>
-						<DevicesAndSensorsList
-							items={[...devices, ...sensors]}
-						></DevicesAndSensorsList>
+						{activeTab == 0 && (
+							<DevicesAndSensorsList
+								items={[...devices, ...sensors]}
+								refetch={refetchStatistics}
+							></DevicesAndSensorsList>
+						)}
 					</Tabs.Item>
 					<Tabs.Item
 						title={
@@ -181,11 +198,15 @@ const RoomViewRoomController = (props) => {
 								<Badge color="info">{devices.length}</Badge>
 							</>
 						}
+						onClick={() => tabsRef.current?.setActiveTab(1)}
 						icon={HiOutlineInbox}
 					>
-						<DevicesAndSensorsList
-							items={devices}
-						></DevicesAndSensorsList>
+						{activeTab == 1 && (
+							<DevicesAndSensorsList
+								items={devices}
+								refetch={refetchStatistics}
+							></DevicesAndSensorsList>
+						)}
 					</Tabs.Item>
 					<Tabs.Item
 						title={
@@ -194,11 +215,15 @@ const RoomViewRoomController = (props) => {
 								<Badge color="info">{sensors.length}</Badge>
 							</>
 						}
+						onClick={() => tabsRef.current?.setActiveTab(2)}
 						icon={HiOutlineCpuChip}
 					>
-						<DevicesAndSensorsList
-							items={sensors}
-						></DevicesAndSensorsList>
+						{activeTab == 2 && (
+							<DevicesAndSensorsList
+								items={sensors}
+								refetch={refetchStatistics}
+							></DevicesAndSensorsList>
+						)}
 					</Tabs.Item>
 				</Tabs.Group>
 			</section>
@@ -208,7 +233,7 @@ const RoomViewRoomController = (props) => {
 
 export default RoomViewRoomController;
 
-function DevicesAndSensorsList({ items }) {
+function DevicesAndSensorsList({ items, refetch }) {
 	return (
 		<div className="grid grid-flow-row gap-4">
 			{items.map((item) => {
@@ -216,6 +241,7 @@ function DevicesAndSensorsList({ items }) {
 					<ControllerItemCard
 						key={item.id}
 						item={item}
+						refetch={refetch}
 					></ControllerItemCard>
 				);
 			})}
@@ -423,7 +449,7 @@ function AddDeviceButton({ refetch }) {
 	);
 }
 
-function AddSensorButton({refetch}) {
+function AddSensorButton({ refetch }) {
 	let [showModal, setShowModal] = useState(false);
 
 	const createControllerMutation = useMutation({
