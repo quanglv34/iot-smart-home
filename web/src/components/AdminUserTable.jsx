@@ -10,6 +10,7 @@ export function UserTableList({ data, isLoading, refetch }) {
 			const { data } = await AxiosInstance.delete(
 				`/admin/users/${userId}`
 			);
+			refetch();
 			return data;
 		},
 	});
@@ -21,21 +22,26 @@ export function UserTableList({ data, isLoading, refetch }) {
 
 	const activeUserMutation = useMutation({
 		mutationKey: "activeUserMutation",
-		mutationFn: async (userId) => {
-			const { data } = await AxiosInstance.delete(
-				`/admin/users/${userId}`
+		mutationFn: async (user) => {
+			const recordData = {...user}
+			recordData.activated = true;
+			const { data } = await AxiosInstance.put(
+				"/admin/users/",
+				recordData
 			);
+			refetch();
 			return data;
 		},
 	});
 
-	const onActivateUser = async (userId) => {
-		const data = activeUserMutation.mutateAsync(userId);
+	const onActivateUser = async (user) => {
+		console.log(user)
+		const data = await activeUserMutation.mutateAsync(user);
 		return data;
 	};
 
-	console.log(data);
 	const users = data;
+
 	if (isLoading) {
 		return <Spinner></Spinner>;
 	}
@@ -95,21 +101,18 @@ export function UserTableList({ data, isLoading, refetch }) {
 										</Badge>
 									))}
 							</Table.Cell>
-							{/* <Table.Cell>
+							<Table.Cell>
 								<button
 									className="font-medium text-red-600 hover:underline dark:text-red-500"
-									onClick={() => onActivateUser(member.id)}
+									onClick={() => onActivateUser(member)}
 								>
 									Activate
 								</button>
-							</Table.Cell> */}
+							</Table.Cell>
 							<Table.Cell>
-								<a
-									href="/tables"
-									className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-								>
+								<button className="font-medium text-blue-600 hover:underline dark:text-blue-500">
 									Edit
-								</a>
+								</button>
 							</Table.Cell>
 							<Table.Cell>
 								<button
