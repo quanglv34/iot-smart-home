@@ -1,9 +1,38 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Badge, Spinner, Table } from "flowbite-react";
+import { AxiosInstance } from "../api";
 import { fetchListUsers } from "../api/user";
 
-export function UserTableList({ data, isLoading}) {
+export function UserTableList({ data, isLoading, refetch }) {
+	const deleteUserMutation = useMutation({
+		mutationKey: "deleteUserMutation",
+		mutationFn: async (userId) => {
+			const { data } = await AxiosInstance.delete(
+				`/admin/users/${userId}`
+			);
+			return data;
+		},
+	});
 
+	const onDeleteUser = async (userId) => {
+		const data = deleteUserMutation.mutateAsync(userId);
+		return data;
+	};
+
+	const activeUserMutation = useMutation({
+		mutationKey: "activeUserMutation",
+		mutationFn: async (userId) => {
+			const { data } = await AxiosInstance.delete(
+				`/admin/users/${userId}`
+			);
+			return data;
+		},
+	});
+
+	const onActivateUser = async (userId) => {
+		const data = activeUserMutation.mutateAsync(userId);
+		return data;
+	};
 
 	console.log(data);
 	const users = data;
@@ -21,6 +50,9 @@ export function UserTableList({ data, isLoading}) {
 					<Table.HeadCell>Email</Table.HeadCell>
 					<Table.HeadCell>Activated</Table.HeadCell>
 					<Table.HeadCell>Roles</Table.HeadCell>
+					<Table.HeadCell>
+						<span className="sr-only">Active</span>
+					</Table.HeadCell>
 					<Table.HeadCell>
 						<span className="sr-only">Edit</span>
 					</Table.HeadCell>
@@ -63,6 +95,14 @@ export function UserTableList({ data, isLoading}) {
 										</Badge>
 									))}
 							</Table.Cell>
+							{/* <Table.Cell>
+								<button
+									className="font-medium text-red-600 hover:underline dark:text-red-500"
+									onClick={() => onActivateUser(member.id)}
+								>
+									Activate
+								</button>
+							</Table.Cell> */}
 							<Table.Cell>
 								<a
 									href="/tables"
@@ -72,7 +112,10 @@ export function UserTableList({ data, isLoading}) {
 								</a>
 							</Table.Cell>
 							<Table.Cell>
-								<button className="font-medium text-red-600 hover:underline dark:text-red-500">
+								<button
+									className="font-medium text-red-600 hover:underline dark:text-red-500"
+									onClick={() => onDeleteUser(member.id)}
+								>
 									Delete
 								</button>
 							</Table.Cell>

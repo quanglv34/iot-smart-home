@@ -1,5 +1,11 @@
+import AppPage from "../../layouts/AppPage";
+
 export default function AdminDashboard() {
     return (
-        <div className="min-h-screen">Hello World there</div>
-    );
+		<AppPage>
+			<AppPage.Header>
+				<AppPage.HeaderTitle title={"Dashboard"}></AppPage.HeaderTitle>
+			</AppPage.Header>
+		</AppPage>
+	);
 }
