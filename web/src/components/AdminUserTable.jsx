@@ -23,19 +23,24 @@ export function UserTableList({ data, isLoading, refetch }) {
 	const activeUserMutation = useMutation({
 		mutationKey: "activeUserMutation",
 		mutationFn: async (user) => {
-			const recordData = {...user}
+			const recordData = { ...user };
 			recordData.activated = true;
-			const { data } = await AxiosInstance.put(
-				"/admin/users/",
-				recordData
-			);
+			const { data } = await AxiosInstance.put("/admin/users/", {
+				activated: recordData.activated,
+				authorities: recordData.authorities,
+				email: recordData.email,
+				firstName: recordData.firstName,
+				id: recordData.id,
+				lastName: recordData.lastName,
+				login: recordData.login,
+			});
 			refetch();
 			return data;
 		},
 	});
 
 	const onActivateUser = async (user) => {
-		console.log(user)
+		console.log(user);
 		const data = await activeUserMutation.mutateAsync(user);
 		return data;
 	};

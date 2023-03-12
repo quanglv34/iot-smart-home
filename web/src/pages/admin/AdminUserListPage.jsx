@@ -11,10 +11,14 @@ export default function AdminUserListPage() {
 			<AppPage.Header>
 				<AppPage.HeaderTitle title={"Users"}></AppPage.HeaderTitle>
 				<AppPage.HeaderActions>
-					<AdminUserCreateUserButton key={1} refetch={refetch} />
+					<AdminUserCreateUserButton key={1} />
 				</AppPage.HeaderActions>
 			</AppPage.Header>
-			<UserTableList data={data} isLoading={isLoading} />
+			<UserTableList
+				data={data}
+				isLoading={isLoading}
+				refetch={refetch}
+			/>
 		</AppPage>
 	);
 }

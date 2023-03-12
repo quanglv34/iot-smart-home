@@ -1,14 +1,16 @@
 import { useMutation } from "@tanstack/react-query";
 import { Label, TextInput, Button, Card } from "flowbite-react";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, Navigate, redirect } from "react-router-dom";
 import { registerRequest } from "../api";
 
 function RegisterPage() {
+	const [isRegistered, setIsRegistered] = useState(false);
 	const { isLoading, error, isError, mutateAsync, data } = useMutation({
 		mutationKey: "registerRequest",
 		mutationFn: registerRequest,
-	})
+	});
 
 	const formik = useFormik({
 		initialValues: {
@@ -26,9 +28,15 @@ function RegisterPage() {
 				firstName: values.firstName,
 				email: values.email,
 				password: values.password,
+			}).then(() => {
+				setIsRegistered(true);
 			});
 		},
-	})
+	});
+
+	if (isRegistered) {
+		return <Navigate to={"/login"}></Navigate>;
+	}
 
 	return (
 		<div className="mx-auto grid min-h-screen max-w-lg items-center">

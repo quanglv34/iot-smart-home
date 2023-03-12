@@ -2,8 +2,7 @@ import axios, { HeadersDefaults } from "axios";
 import { useAuthStore } from "../store";
 
 const AxiosInstance = axios.create({
-	baseURL:
-		"http://cec3-2405-4802-35f-1cf0-f1c2-e4a-4bb6-8d41.ap.ngrok.io:3000/api/",
+	baseURL: "http://localhost:3000/api/",
 });
 
 AxiosInstance.interceptors.request.use((config) => {
